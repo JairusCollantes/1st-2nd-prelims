@@ -2,12 +2,15 @@ import random
 
 first_names = [
     "John", "Maria", "Alex", "Chris", "Anna", "Mark", "Sophia",
-    "Daniel", "Abzier", "Jervey", "Liam", "Nicole", "Glairoz", "Ella"
+    "Daniel", "Abzier", "Jervey", "Liam", "Nicole", "Glairoz", "Ella",
+    "Jairus", "Vhinch", "Carlkirson", "Nash", "Gelo", "Owen", "Ava"
 ]
 
 last_names = [
     "Cruz", "Reyes", "Santos", "Garcia", "Lopez", "Torres",
-    "Flores", "Mendoza", "Ramos", "Aquino"
+    "Flores", "Mendoza", "Ramos", "Aquino", "Punay", "Bolado", "Erezo",
+    "Calusin", "Collantes", "Lambaco", "Sanchez", "Gabertan", "Razalan",
+    "Solina", "Salvatierra"
 ]
 
 courses = ["BSCS-1A", "BSIT-1A", "BSEMC-1A", "BSCS-1B", "BSIT-1B", "BSEMC-1B"]
