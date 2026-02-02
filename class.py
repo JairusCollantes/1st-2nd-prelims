@@ -39,14 +39,25 @@ class Student:
     def courses(self, value):
         self._courses = value
         
-    def enroll(self, course):
-        pass
+    # Methods
+    # Enroll the student in a block
+    def enroll_block(self, block):
+        self._enrolled_block = block
     
+    # Drop a course from the student's course list
     def drop(self, course):
-        pass
-    
+        if course in self._courses:
+            self._courses.remove(course)
+    # Add a course to the student's course list
     def add_subject(self, course):
-        pass
+        if course not in self._courses:
+            self._courses.append(course)
+    
+    # Get courses from the enrolled block
+    def get_block_courses(self):
+        if self._enrolled_block:
+            return self._enrolled_block.courses
+        return []
     
 class Course:
     def __init__(self, course_name, course_code):
@@ -114,6 +125,17 @@ class Section:
     @property
     def students_enrolled(self):
         return self._students_enrolled.copy()
+    
+    # Methods
+    # Enroll a student in the section
+    def enroll_student(self, student):
+        if student not in self._students_enrolled:
+            self._students_enrolled.append(student)
+    
+    # Drop a student from the section
+    def drop_student(self, student):
+        if student in self._students_enrolled:
+            self._students_enrolled.remove(student)
 
 class Block:
     def __init__(self, block_name):
@@ -132,3 +154,14 @@ class Block:
     @property
     def courses(self):
         return self._courses.copy()
+    
+    # Methods
+    # Add a course to the block
+    def add_course(self, course):
+        if course not in self._courses:
+            self._courses.append(course)
+    
+    # Remove a course from the block
+    def remove_course(self, course):
+        if course in self._courses:
+            self._courses.remove(course)
