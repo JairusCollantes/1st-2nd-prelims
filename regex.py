@@ -27,12 +27,12 @@ for line in text:
             'grade': grade
         })
         
-        # Update section stats (without defaultdict)
+        # Update section stats
         if full_section not in section_stats:
             section_stats[full_section] = []
         section_stats[full_section].append((full_name, grade))
         
-        # Update course stats (without defaultdict)
+        # Update course stats
         if course not in course_stats:
             course_stats[course] = 0
         course_stats[course] += 1
