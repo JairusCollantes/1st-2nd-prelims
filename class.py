@@ -56,7 +56,7 @@ class Student:
     # Get courses from the enrolled block
     def get_block_courses(self):
         if self._enrolled_block:
-            return self._enrolled_block.courses
+            return self._enrolled_block.courses.copy()
         return []
     
 class Course:
@@ -207,22 +207,22 @@ while True:
                 for student in students:
                     print(f"Name: {student.name}, ID: {student.student_id}")
             elif sub_choice == '3':
-                print("List of Sections:")
-                for section in sections:
-                    print(f"ID: {section.section_id}, Slot: {section.slot}, Schedule: {section.schedule}")
                 print("List of Students:")
                 for student in students:
                     print(f"ID: {student.student_id}, Name: {student.name}")
-                print("Add student to Section selected.")
-                section_id = input("Enter section ID: ")
-                student_id = input("Enter student ID to add: ")
-                section = next((s for s in sections if s.section_id == section_id), None)
-                student = next((st for st in students if st.student_id == student_id), None)
-                if section and student:
-                    section.enroll_student(student)
-                    print(f"Student {student.name} added to Section {section.section_id}.")
+                print("List of Blocks:")
+                for block in blocks:
+                    print(f"Block Name: {block.block_name}, Courses: {[course.course_name for course in block.courses]}")
+                print("Add student to Block selected.")
+                student_id = input("Enter student ID to add to block: ")
+                block_name = input("Enter block name to add the student to: ")
+                student = next((s for s in students if s.student_id == student_id), None)
+                block = next((b for b in blocks if b.block_name == block_name), None)
+                if student and block:
+                    student.enroll_block(block)
+                    print(f"Student {student.name} enrolled in Block {block.block_name}.")
                 else:
-                    print("Section or Student not found.")
+                    print("Student or Block not found.")
             elif sub_choice == '4':
                 print("List of Students:")
                 for student in students:
@@ -236,7 +236,7 @@ while True:
                 student = next((s for s in students if s.student_id == student_id), None)
                 course = next((c for c in courses if c.course_code == course_code), None)
                 if student and course:
-                    student.enroll_course(course)
+                    student.add_subject(course)
                     print(f"Student {student.name} enrolled in Course {course.course_name}.")
                 else:
                     print("Student or Course not found.")
@@ -322,7 +322,7 @@ while True:
                 print("List of Blocks:")
                 for block in blocks:
                     print(f"Block Name: {block.block_name}, Courses: {[course.course_name for course in block.courses]}")
-            elif choice == '3':
+            elif sub_choice == '3':
                 print("List of Blocks:")
                 for block in blocks:
                     print(f"Block Name: {block.block_name}, Courses: {[course.course_name for course in block.courses]}")
@@ -336,7 +336,7 @@ while True:
                     print(f"Course {course.course_name} added to Block {block.block_name}.")
                 else:
                    print("Block or Course not found.")
-            elif choice == '6':
+            elif sub_choice == '4':
                 print("List of Sections:")
                 for section in sections:
                     print(f"ID: {section.section_id}, Slot: {section.slot}, Schedule: {section.schedule}")
