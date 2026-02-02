@@ -9,7 +9,7 @@ best_overall_grade = None
 best_overall_students = []
 
 # ================================
-# Use findall() to pre-extract all sections and courses
+# Use findall
 # ================================
 all_sections = re.findall(r"[A-Z]+-\d[A-Z]", "\n".join(text))
 all_courses = [re.findall(r"[A-Z]+", sec)[0] for sec in all_sections]
