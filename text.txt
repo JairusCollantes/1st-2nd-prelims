@@ -218,7 +218,7 @@ ID: A25-6850 Ava Ramos BSCS-1B : 1.75
 ID: A25-3312 Glairoz Razalan BSIT-1A : 1.28
 ID: A25-7624 Maria Salvatierra BSCS-1B : 1.29
 ID: A25-7990 Abzier Aquino BSCS-1B : 1.31
-ID: A25-5746 Jairus Ramos BSIT-1B : 1.01
+ID: A25-5746 Jairus Ramos BSIT-1B : 1.02
 ID: A25-5234 Sophia Aquino BSCS-1B : 1.74
 ID: A25-5894 Mark Garcia BSEMC-1B : 1.6
 ID: A25-8916 Chris Garcia BSCS-1A : 1.05
