@@ -285,7 +285,7 @@ while True:
             print("1. Add Section")
             print("2. View Sections")
             print("3. Back to Main Menu")
-            print("=========================================================")1
+            print("=========================================================")
             sub_choice = input("Enter your choice: ")
             if sub_choice == '3':
                 break
