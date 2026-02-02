@@ -152,7 +152,7 @@ ID: A25-5584 Abzier Collantes BSIT-1B : 1.02
 ID: A25-3014 Ella Razalan BSCS-1B : 1.18
 ID: A25-9228 Vhinch Sanchez BSIT-1A : 1.3
 ID: A25-6730 Nash Calusin BSEMC-1A : 1.74
-ID: A25-2301 Vhinch Lambaco BSEMC-1A : 1.0
+ID: A25-2301 Vhinch Lambaco BSEMC-1A : 1.02
 ID: A25-1077 Gelo Reyes BSCS-1B : 1.51
 ID: A25-7540 Nicole Bolado BSCS-1A : 1.15
 ID: A25-8240 Carlkirson Erezo BSIT-1A : 1.38
@@ -211,7 +211,7 @@ ID: A25-9720 Maria Bolado BSCS-1B : 1.27
 ID: A25-3827 Vhinch Mendoza BSIT-1B : 1.16
 ID: A25-1744 Alex Lambaco BSEMC-1B : 1.22
 ID: A25-5312 Ella Cruz BSCS-1B : 1.11
-ID: A25-2912 Jairus Collantes BSCS-1A : 1.25
+ID: A25-2912 Jairus Collantes BSCS-1A : 1.00
 ID: A25-7694 Ava Bolado BSIT-1A : 1.04
 ID: A25-5141 John Aquino BSIT-1B : 1.68
 ID: A25-6850 Ava Ramos BSCS-1B : 1.75
@@ -481,7 +481,7 @@ ID: A25-4188 Nicole Lambaco BSIT-1A : 1.23
 ID: A25-7200 Abzier Santos BSIT-1A : 1.64
 ID: A25-9599 Gelo Collantes BSEMC-1B : 1.65
 ID: A25-4409 Liam Sanchez BSEMC-1A : 1.13
-ID: A25-1345 Nash Solina BSIT-1A : 1.0
+ID: A25-1345 Nash Solina BSIT-1A : 1.04
 ID: A25-8270 Mark Lambaco BSCS-1A : 1.55
 ID: A25-8480 Maria Calusin BSIT-1B : 1.08
 ID: A25-6530 Mark Calusin BSCS-1B : 1.55
@@ -834,7 +834,7 @@ ID: A25-1841 Liam Razalan BSIT-1A : 1.09
 ID: A25-9901 Carlkirson Solina BSEMC-1A : 1.2
 ID: A25-5553 Gelo Flores BSEMC-1A : 1.05
 ID: A25-4120 Vhinch Torres BSEMC-1B : 1.24
-ID: A25-3658 Anna Santos BSEMC-1A : 1.0
+ID: A25-3658 Anna Santos BSEMC-1A : 1.02
 ID: A25-1127 Ella Razalan BSCS-1A : 1.05
 ID: A25-3126 Ava Erezo BSEMC-1B : 1.28
 ID: A25-1460 Glairoz Torres BSCS-1B : 1.26
