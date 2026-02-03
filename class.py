@@ -327,10 +327,12 @@ while True:
             print("\n--- Section Menu ---")
             print("1. Add Section")
             print("2. View Sections")
-            print("3. Back to Main Menu")
+            print("3. Enroll Student to Section")
+            print("4. Drop Student from Section")
+            print("5. Back to Main Menu")
             sub_choice = input("Enter your choice: ")
 
-            if sub_choice == '3':
+            if sub_choice == '5':
                 break
             elif sub_choice == '1':
                 section_id = input("Enter section ID: ")
@@ -355,6 +357,48 @@ while True:
                     block_name = section.block.block_name if section.block else "None"
                     students_list = [s.name for s in section.students_enrolled]
                     print(f"ID: {section.section_id}, Slot: {section.slot}, Schedule: {section.schedule}, Block: {block_name}, Students: {students_list}")
+            elif sub_choice == '3':
+                section_id = input("Enter section ID: ")
+                student_id = input("Enter student ID: ")
+
+                section = None
+                for s in sections:
+                    if s.section_id == section_id:
+                        section = s
+                        break
+
+                student = None
+                for st in students:
+                    if st.student_id == student_id:
+                        student = st
+                        break
+
+                if section and student:
+                    section.enroll_student(student)
+                    print(f"Student {student.name} enrolled in Section {section.section_id}.")
+                else:
+                    print("Section or Student not found.")
+            elif sub_choice == '4':
+                section_id = input("Enter section ID: ")
+                student_id = input("Enter student ID: ")
+
+                section = None
+                for s in sections:
+                    if s.section_id == section_id:
+                        section = s
+                        break
+
+                student = None
+                for st in students:
+                    if st.student_id == student_id:
+                        student = st
+                        break
+
+                if section and student:
+                    section.drop_student(student)
+                    print(f"Student {student.name} dropped from Section {section.section_id}.")
+                else:
+                    print("Section or Student not found.")
 
     # -----------------------------
     # Block Management
