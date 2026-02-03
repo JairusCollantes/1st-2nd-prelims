@@ -6,7 +6,7 @@ class Student:
         self._name = name
         self._student_id = student_id
         self._enrolled_block = None
-        self._courses = []
+        self._sections = []
 
     # Getters and Setters
     @property
@@ -32,61 +32,36 @@ class Student:
     @enrolled_block.setter
     def enrolled_block(self, value):
         self._enrolled_block = value
-
+        
     @property
-    def courses(self):
-        combined_courses = self.get_block_courses() + self._courses
-        # Remove duplicates by course_code
-        unique_courses = []
-        codes = []
-        for c in combined_courses:
-            if c.course_code not in codes:
-                unique_courses.append(c)
-                codes.append(c.course_code)
-        return unique_courses
-
+    def sections(self):
+        return self._sections.copy()
+    
     # Methods
     def enroll_block(self, block):
-        self._enrolled_block = block
-
-    def add_subject(self, course):
-        if course not in self._courses:
-            self._courses.append(course)
-
-    def drop(self, course):
-        if course in self._courses:
-            self._courses.remove(course)
-
-    def get_block_courses(self):
-        if self._enrolled_block:
-            return self._enrolled_block.courses.copy()
-        return []
-
-class Course:
-    def __init__(self, course_name, course_code):
-        self._course_name = course_name
-        self._course_code = course_code
-
-    @property
-    def course_name(self):
-        return self._course_name
-
-    @course_name.setter
-    def course_name(self, value):
-        self._course_name = value
-
-    @property
-    def course_code(self):
-        return self._course_code
-
-    @course_code.setter
-    def course_code(self, value):
-        self._course_code = value
+        self.enrolled_block = block
+        for section in block.sections:
+            if section not in self._sections:
+                self._sections.append(section)
+                section.enroll_student(self)
+    
+    def add_section(self, section):
+        if section not in self._sections:
+            self._sections.append(section)
+            section.enroll_student(self)
+            
+    def drop_section(self, section):
+        if section in self._sections:
+            self._sections.remove(section)
+            section.drop_student(self)
+    
+    def list_courses(self):
+        return [section.course_name for section in self._sections]  
 
 class Block:
     def __init__(self, block_name):
         self._block_name = block_name
-        self._courses = []
+        self._sections = []
 
     @property
     def block_name(self):
@@ -97,20 +72,26 @@ class Block:
         self._block_name = value
 
     @property
-    def courses(self):
-        return self._courses.copy()
+    def sections(self):
+        return self._sections.copy()
 
-    def add_course(self, course):
-        if course not in self._courses:
-            self._courses.append(course)
+    def add_section(self, section):
+        if section not in self._sections:
+            self._sections.append(section)
+            section.block = self
 
-    def remove_course(self, course):
-        if course in self._courses:
-            self._courses.remove(course)
+    def remove_section(self, section):
+        if section in self._sections:
+            for student in section.students_enrolled:
+                student.drop(section)
+            
+            self._sections.remove(section)
+            section.block = None
 
 class Section:
-    def __init__(self, section_id, slot, schedule):
+    def __init__(self, section_id, course_name , slot, schedule):
         self._section_id = section_id
+        self._course_name = course_name 
         self._slot = slot
         self._schedule = schedule
         self._block = None
@@ -123,6 +104,14 @@ class Section:
     @section_id.setter
     def section_id(self, value):
         self._section_id = value
+
+    @property
+    def course_name(self):
+        return self._course_name
+    
+    @course_name.setter
+    def course_name(self, value):
+        self._course_name = value
 
     @property
     def slot(self):
@@ -155,8 +144,8 @@ class Section:
     def enroll_student(self, student):
         if student not in self._students_enrolled:
             self._students_enrolled.append(student)
-            if self._block:
-                student.enroll_block(self._block)
+            # if self._block:
+            #     student.enroll_block(self._block)
 
     def drop_student(self, student):
         if student in self._students_enrolled:
@@ -166,7 +155,6 @@ class Section:
 # Data storage
 # ================================
 students = []
-courses = []
 blocks = []
 sections = []
 
@@ -176,13 +164,12 @@ sections = []
 while True:
     print("\n==================== Student Management System ====================")
     print("1. Manage Students")
-    print("2. Manage Courses")
-    print("3. Manage Sections")
-    print("4. Manage Blocks")
-    print("5. Exit")
+    print("2. Manage Sections")
+    print("3. Manage Blocks")
+    print("4. Exit")
     choice = input("Enter your choice: ")
 
-    if choice == '5':
+    if choice == '4':
         print("Exiting the system. Goodbye!")
         break
 
@@ -220,7 +207,7 @@ while True:
                     print("No students yet.")
                     continue
                 for student in students:
-                    course_list = [c.course_name for c in student.courses]
+                    course_list = student.list_courses()
                     print(f"ID: {student.student_id}, Name: {student.name}, Courses: {course_list}")
             elif sub_choice == '3':
                 student_id = input("Enter student ID: ")
@@ -245,28 +232,28 @@ while True:
                     print("Student or Block not found.")
             elif sub_choice == '4':
                 student_id = input("Enter student ID: ")
-                course_code = input("Enter course code: ")
-
+                course_code = input("Enter section ID: ")
+                
                 student = None
                 for s in students:
                     if s.student_id == student_id:
                         student = s
                         break
 
-                course = None
-                for c in courses:
-                    if c.course_code == course_code:
-                        course = c
+                section = None
+                for c in sections:
+                    if c.section_id == course_code:
+                        section = c
                         break
 
-                if student and course:
-                    student.add_subject(course)
-                    print(f"Student {student.name} enrolled in Course {course.course_name}.")
+                if student and section:
+                    student.add_section(section)
+                    print(f"Student {student.name} enrolled in Section {section.section_id}.")
                 else:
-                    print("Student or Course not found.")
+                    print("Student or Section not found.")
             elif sub_choice == '5':
                 student_id = input("Enter student ID: ")
-                course_code = input("Enter course code: ")
+                course_code = input("Enter section ID: ")
 
                 student = None
                 for s in students:
@@ -274,68 +261,33 @@ while True:
                         student = s
                         break
 
-                course = None
-                for c in courses:
-                    if c.course_code == course_code:
-                        course = c
+                section = None
+                for c in sections:
+                    if c.section_id == course_code:
+                        section = c
                         break
 
-                if student and course:
-                    student.drop(course)
-                    print(f"Student {student.name} dropped Course {course.course_name}.")
+                if student and section:
+                    student.drop_section(section)
+                    print(f"Student {student.name} dropped Section {section.section_id}.")
                 else:
-                    print("Student or Course not found.")
-
+                    print("Student or Section not found.")
     # -----------------------------
-    # Course Management
+    # Section Management
     # -----------------------------
     elif choice == '2':
         while True:
-            print("\n--- Course Menu ---")
-            print("1. Add Course")
-            print("2. View Courses")
+            print("\n--- Section Menu ---")
+            print("1. Add Section")
+            print("2. View Sections")
             print("3. Back to Main Menu")
             sub_choice = input("Enter your choice: ")
 
             if sub_choice == '3':
                 break
             elif sub_choice == '1':
-                course_name = input("Enter course name: ")
-                course_code = input("Enter course code: ")
-                exists = False
-                for c in courses:
-                    if c.course_code == course_code:
-                        exists = True
-                        break
-                if exists:
-                    print("Course code already exists!")
-                else:
-                    courses.append(Course(course_name, course_code))
-                    print(f"Course {course_name} ({course_code}) added.")
-            elif sub_choice == '2':
-                if not courses:
-                    print("No courses yet.")
-                    continue
-                for course in courses:
-                    print(f"Name: {course.course_name}, Code: {course.course_code}")
-
-    # -----------------------------
-    # Section Management
-    # -----------------------------
-    elif choice == '3':
-        while True:
-            print("\n--- Section Menu ---")
-            print("1. Add Section")
-            print("2. View Sections")
-            print("3. Enroll Student to Section")
-            print("4. Drop Student from Section")
-            print("5. Back to Main Menu")
-            sub_choice = input("Enter your choice: ")
-
-            if sub_choice == '5':
-                break
-            elif sub_choice == '1':
                 section_id = input("Enter section ID: ")
+                course_name = input("Enter course name: ")
                 slot = input("Enter slot: ")
                 schedule = input("Enter schedule: ")
 
@@ -347,7 +299,7 @@ while True:
                 if exists:
                     print("Section ID already exists!")
                 else:
-                    sections.append(Section(section_id, slot, schedule))
+                    sections.append(Section(section_id, course_name, slot, schedule))
                     print(f"Section {section_id} added.")
             elif sub_choice == '2':
                 if not sections:
@@ -356,60 +308,17 @@ while True:
                 for section in sections:
                     block_name = section.block.block_name if section.block else "None"
                     students_list = [s.name for s in section.students_enrolled]
-                    print(f"ID: {section.section_id}, Slot: {section.slot}, Schedule: {section.schedule}, Block: {block_name}, Students: {students_list}")
-            elif sub_choice == '3':
-                section_id = input("Enter section ID: ")
-                student_id = input("Enter student ID: ")
-
-                section = None
-                for s in sections:
-                    if s.section_id == section_id:
-                        section = s
-                        break
-
-                student = None
-                for st in students:
-                    if st.student_id == student_id:
-                        student = st
-                        break
-
-                if section and student:
-                    section.enroll_student(student)
-                    print(f"Student {student.name} enrolled in Section {section.section_id}.")
-                else:
-                    print("Section or Student not found.")
-            elif sub_choice == '4':
-                section_id = input("Enter section ID: ")
-                student_id = input("Enter student ID: ")
-
-                section = None
-                for s in sections:
-                    if s.section_id == section_id:
-                        section = s
-                        break
-
-                student = None
-                for st in students:
-                    if st.student_id == student_id:
-                        student = st
-                        break
-
-                if section and student:
-                    section.drop_student(student)
-                    print(f"Student {student.name} dropped from Section {section.section_id}.")
-                else:
-                    print("Section or Student not found.")
-
+                    print(f"ID: {section.section_id}, Course: {section.course_name}, Slot: {section.slot}, Schedule: {section.schedule}, Block: {block_name}, Students: {students_list}")
     # -----------------------------
     # Block Management
     # -----------------------------
-    elif choice == '4':
+    elif choice == '3':
         while True:
             print("\n--- Block Menu ---")
             print("1. Add Block")
             print("2. View Blocks")
-            print("3. Add Course to Block")
-            print("4. Assign Block to Section")
+            print("3. Add Section to Block")
+            print("4. Remove Section from Block")
             print("5. Back to Main Menu")
             sub_choice = input("Enter your choice: ")
 
@@ -432,32 +341,31 @@ while True:
                     print("No blocks yet.")
                     continue
                 for block in blocks:
-                    course_list = [c.course_name for c in block.courses]
-                    print(f"Block: {block.block_name}, Courses: {course_list}")
+                    course_list = [c.section_id for c in block.sections]
+                    print(f"Block: {block.block_name}, Sections: {course_list}")
             elif sub_choice == '3':
                 block_name = input("Enter block name: ")
-                course_code = input("Enter course code to add: ")
-
+                section_id = input("Enter section ID to add: ")
                 block = None
                 for b in blocks:
                     if b.block_name == block_name:
                         block = b
                         break
 
-                course = None
-                for c in courses:
-                    if c.course_code == course_code:
-                        course = c
+                section = None
+                for c in sections:
+                    if c.section_id == section_id:
+                        section = c
                         break
 
-                if block and course:
-                    block.add_course(course)
-                    print(f"Course {course.course_name} added to Block {block.block_name}.")
+                if block and section:
+                    block.add_section(section)
+                    print(f"Section {section.section_id} added to Block {block.block_name}.")
                 else:
-                    print("Block or Course not found.")
+                    print("Block or Section not found.")
             elif sub_choice == '4':
                 section_id = input("Enter section ID: ")
-                block_name = input("Enter block name to assign: ")
+                block_name = input("Enter block name to remove section from: ")
 
                 section = None
                 for s in sections:
@@ -472,8 +380,8 @@ while True:
                         break
 
                 if section and block:
-                    section.block = block
-                    print(f"Block {block.block_name} assigned to Section {section.section_id}.")
+                    block.remove_section(section)
+                    print(f"Section {section.section_id} removed from Block {block.block_name}.")
                 else:
                     print("Section or Block not found.")
     else:
