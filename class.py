@@ -182,8 +182,8 @@ while True:
             print("1. Add Student")
             print("2. View Students")
             print("3. Add student to Block")
-            print("4. Enroll student to Course")
-            print("5. Drop student from Course")
+            print("4. Enroll student to Section")
+            print("5. Drop student from Section")
             print("6. Back to Main Menu")
             sub_choice = input("Enter your choice: ")
 
