@@ -432,6 +432,5 @@ while True:
                     print(f"Block {block.block_name} assigned to Section {section.section_id}.")
                 else:
                     print("Section or Block not found.")
-
     else:
         print("Invalid choice. Please try again.")
